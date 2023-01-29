@@ -10,6 +10,32 @@ export const recipes = [
       { cuantity: '1tbs', ingridient: 'olive oil' },
     ],
     preparation: 'Put all the ingridients together. Amasa. Let the ',
-    favorite: false,
+    isFavorite: false,
+  },
+  {
+    id: 2,
+    name: 'Curry',
+    image:
+      'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y3Vycnl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    ingredients: [
+      { cuantity: 1, ingridient: 'egg' },
+      { cuantity: '100g', ingridient: 'flour' },
+      { cuantity: '1tbs', ingridient: 'olive oil' },
+    ],
+    preparation: 'Put all the ingridients together. Amasa. Let the ',
+    isFavorite: true,
+  },
+  {
+    id: 3,
+    name: 'Pizza',
+    image:
+      'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cGl6emF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    ingredients: [
+      { cuantity: 1, ingridient: 'egg' },
+      { cuantity: '100g', ingridient: 'flour' },
+      { cuantity: '1tbs', ingridient: 'olive oil' },
+    ],
+    preparation: 'Put all the ingridients together. Amasa. Let the ',
+    isFavorite: true,
   },
 ];

@@ -4,20 +4,19 @@ import { FaHeart } from 'react-icons/fa';
 
 const RecipeCard = ({ recipe }) => {
   return (
-    <Link to={`/recipes/${recipe.id}`} className={classes.recipe}>
+    <div className={classes.recipe}>
       <FaHeart
-        style={{
-          fontSize: '20px',
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          color: '#f4f4f4',
-        }}
+        className={`${classes.favorite} ${
+          recipe.isFavorite ? classes.isFavorite : ''
+        }`}
+        onClick={() => console.log('first')}
       />
-      <img src={recipe.image} alt={recipe.title} />
+      <Link to={`/recipes/${recipe.id}`}>
+        <img src={recipe.image} alt={recipe.title} />
 
-      <h2 className={classes.name}>{recipe.name}</h2>
-    </Link>
+        <p className={classes.name}>{recipe.name}</p>
+      </Link>
+    </div>
   );
 };
 

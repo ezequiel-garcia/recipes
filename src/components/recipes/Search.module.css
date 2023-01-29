@@ -1,0 +1,13 @@
+.input {
+    padding: .3rem .8rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 80%;
+}
+
+@media(min-width: 480px){
+    input{
+        max-width: 60%;
+    }
+}
