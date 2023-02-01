@@ -11,6 +11,7 @@ export const recipes = [
     ],
     preparation: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: false,
+    category: 'Main Course',
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ export const recipes = [
     ],
     preparation: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: true,
+    category: 'Main Course',
   },
   {
     id: 3,
@@ -37,5 +39,16 @@ export const recipes = [
     ],
     preparation: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: true,
+    category: 'Main Course',
   },
+];
+
+export const categories = [
+  'Main Course',
+  'Appetizer',
+  'Dessert',
+  'Salad',
+  'Side dish',
+  'Soup',
+  'Other',
 ];

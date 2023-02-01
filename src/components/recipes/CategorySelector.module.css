@@ -1,0 +1,29 @@
+.category-selector {
+    display: block;
+   width: 100%;
+    height: 2rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    appearance: none;
+    background-color: rgb(244, 243, 243);
+    color: rgba(0, 0, 0, 0.702);
+    padding: .3rem .8rem;
+    border-radius: 1rem;
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+    
+  
+  }
+  
+  .category-selector:focus {
+    outline: none;
+    border-color: #999;
+  }
+
+
+
+@media(min-width: 480px){
+    .category-selector{
+        width: 10rem;
+    }
+}

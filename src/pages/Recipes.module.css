@@ -1,0 +1,11 @@
+.filter-search-container {
+    margin: 0 auto;
+    width: 90%;
+}
+
+@media(min-width: 480px){
+    .filter-search-container{
+        max-width: 60%;
+    }
+}
+
