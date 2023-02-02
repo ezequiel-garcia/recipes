@@ -1,7 +1,10 @@
-import { NavLink, useRouteLoaderData } from 'react-router-dom';
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import AuthContext from '../store/auth-context';
 import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
+  const authCtx = useContext(AuthContext);
   return (
     <header className={classes.header}>
       <nav>
@@ -17,24 +20,33 @@ const MainNavigation = () => {
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/recipes"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              end
-            >
-              Recipes
-            </NavLink>
-          </li>
+          {authCtx.isLoggedIn && (
+            <li>
+              <NavLink
+                to="/recipes"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+                end
+              >
+                Recipes
+              </NavLink>
+            </li>
+          )}
         </ul>
       </nav>
+
       <nav>
         <ul className={classes.list}>
-          <li>
-            <NavLink>Login / Logout</NavLink>
-          </li>
+          {!authCtx.isLoggedIn ? (
+            <li>
+              <NavLink to="/authentication">Login</NavLink>
+            </li>
+          ) : (
+            <li>
+              <NavLink to="/logout">Logout</NavLink>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

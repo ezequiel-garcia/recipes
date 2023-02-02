@@ -6,12 +6,14 @@ import RecipesPage from './pages/Recipes';
 import RecipeDetailPage from './pages/RecipeDetail';
 
 import './App.css';
+import NewRecipePage from './pages/NewRecipe';
 
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
   { path: 'authentication', element: <AuthenticationPage /> },
   { path: 'recipes', element: <RecipesPage /> },
   { path: 'recipes/:recipeId', element: <RecipeDetailPage /> },
+  { path: 'new', element: <NewRecipePage /> },
 ]);
 
 function App() {
