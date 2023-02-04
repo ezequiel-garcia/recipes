@@ -3,9 +3,10 @@ import axios from 'axios';
 import Loader from '../util/Loader';
 import classes from './AuthForm.module.css';
 import AuthContext from '../store/auth-context';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   //   const repeatedEmailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -83,13 +84,18 @@ const AuthForm = () => {
       .post(url, {
         email: enteredEmail,
         password: enteredPassword,
-        // returnSecureToken: true,
+        returnSecureToken: true,
       })
       .then((res) => {
         setIsLoading(false);
-        authCtx.login(res.data.idToken);
+        const expirationTime = new Date(
+          new Date().getTime() + +res.data.expiresIn * 1000
+        );
+        authCtx.login(res.data.idToken, expirationTime.toISOString());
+        navigate('/recipes');
       })
       .catch((error) => {
+        console.log(error);
         setIsLoading(false);
         const errorMessage =
           'Authentication failed! ' + error.response?.data?.error?.message;
