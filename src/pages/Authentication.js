@@ -6,7 +6,6 @@ import MainNavigation from '../components/nav/MainNavigation';
 const AuthenticationPage = () => {
   return (
     <>
-      <MainNavigation />
       <AuthForm />
     </>
   );

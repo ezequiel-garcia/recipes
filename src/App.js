@@ -8,13 +8,21 @@ import HomePage from './pages/Home';
 import AuthenticationPage, { checkAuthLoader } from './pages/Authentication';
 import RecipesPage from './pages/Recipes';
 import RecipeDetailPage from './pages/RecipeDetail';
+import RootLayout from './pages/Root';
 
 import './App.css';
 import NewRecipePage from './pages/NewRecipe';
 
 const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
-  { path: 'authentication', element: <AuthenticationPage /> },
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'authentication', element: <AuthenticationPage /> },
+    ],
+  },
+
   { path: 'recipes', element: <RecipesPage />, loader: checkAuthLoader },
   {
     path: 'recipes/:recipeId',
@@ -28,11 +36,7 @@ const router = createBrowserRouter([
 function App() {
   // const authCtx = useContext(AuthContext);
 
-  return (
-    <Background>
-      <RouterProvider router={router} />
-    </Background>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

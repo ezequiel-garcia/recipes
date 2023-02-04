@@ -1,10 +1,13 @@
 import React from 'react';
-import MainNavigation from '../components/nav/MainNavigation';
 
 const HomePage = () => {
   return (
     <div>
-      <MainNavigation />
+      <div>
+        <h1 style={{ color: 'white', backgroundColor: '#00000097' }}>
+          HERE IT WILL BE CHAT GPT FOR RECIPES
+        </h1>
+      </div>
     </div>
   );
 };
