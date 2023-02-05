@@ -51,7 +51,14 @@ const MainNavigation = () => {
         <ul className={classes.list}>
           {!authCtx.isLoggedIn ? (
             <li>
-              <NavLink to="/authentication">Login</NavLink>
+              <NavLink
+                to="/authentication"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Login
+              </NavLink>
             </li>
           ) : (
             <li>

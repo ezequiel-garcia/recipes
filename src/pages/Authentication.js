@@ -1,14 +1,9 @@
 import React from 'react';
 import { redirect } from 'react-router-dom';
 import AuthForm from '../components/Auth/AuthForm';
-import MainNavigation from '../components/nav/MainNavigation';
 
 const AuthenticationPage = () => {
-  return (
-    <>
-      <AuthForm />
-    </>
-  );
+  return <AuthForm />;
 };
 
 export default AuthenticationPage;
