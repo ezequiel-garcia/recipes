@@ -10,21 +10,32 @@
 }
 
 .new-button{
-    display: block;
+    /* display: block; */
+    margin-top: .5rem;
     padding: .5rem 1rem ;
     margin-bottom: .5rem;
     background-color: transparent;
     background-color: rgba(68, 68, 68, 0.583);
-    color: rgb(249, 86, 86);
-    border: 2px solid rgb(249, 86, 86);
+    color: white;
+    border: 2px solid white;
     align-self: flex-start;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     transition: all .2s;
+    font-family: 'montserrat';
+    
 
 }
 
 .new-button:hover{
     cursor: pointer;
     background-color: rgba(68, 68, 68, 0.383);
+    border-color: orange;
+    color: orange;
+}
+
+.new-container{
+    display: inline-block;
+    margin: .5rem 0;
+    
 }
