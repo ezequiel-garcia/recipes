@@ -9,9 +9,10 @@ export const recipes = [
       { cuantity: '100g', ingridient: 'flour' },
       { cuantity: '1tbs', ingridient: 'olive oil' },
     ],
-    preparation: 'Put all the ingridients together. Amasa. Let the ',
+    instructions: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: false,
     category: 'Main Course',
+    recipeImage: null,
   },
   {
     id: 2,
@@ -23,9 +24,10 @@ export const recipes = [
       { cuantity: '100g', ingridient: 'flour' },
       { cuantity: '1tbs', ingridient: 'olive oil' },
     ],
-    preparation: 'Put all the ingridients together. Amasa. Let the ',
+    instructions: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: true,
     category: 'Main Course',
+    recipeImage: null,
   },
   {
     id: 3,
@@ -37,9 +39,25 @@ export const recipes = [
       { cuantity: '100g', ingridient: 'flour' },
       { cuantity: '1tbs', ingridient: 'olive oil' },
     ],
-    preparation: 'Put all the ingridients together. Amasa. Let the ',
+    instructions: 'Put all the ingridients together. Amasa. Let the ',
     isFavorite: true,
     category: 'Main Course',
+    recipeImage: null,
+  },
+  {
+    id: 4,
+    name: 'Pizza Margarita',
+    image:
+      'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cGl6emF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    ingredients: [
+      { cuantity: 1, ingridient: 'egg' },
+      { cuantity: '100g', ingridient: 'flour' },
+      { cuantity: '1tbs', ingridient: 'olive oil' },
+    ],
+    instructions: 'Put all the ingridients together. Amasa. Let the ',
+    isFavorite: true,
+    category: 'Main Course',
+    recipeImage: null,
   },
 ];
 

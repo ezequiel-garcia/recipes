@@ -91,7 +91,11 @@ const AuthForm = () => {
         const expirationTime = new Date(
           new Date().getTime() + +res.data.expiresIn * 1000
         );
-        authCtx.login(res.data.idToken, expirationTime.toISOString());
+        authCtx.login(
+          res.data.idToken,
+          expirationTime.toISOString(),
+          res.data.localId
+        );
         navigate('/recipes');
       })
       .catch((error) => {

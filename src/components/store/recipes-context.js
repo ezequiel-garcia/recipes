@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 //ESTO SACARLO DSPPP
-import { recipes } from '../../DUMMY_DATA';
+import { recipes as currentRecipes } from '../../DUMMY_DATA';
+import AuthContext from './auth-context';
 
 const RecipesContext = createContext({
   recipes: [],
@@ -17,7 +18,7 @@ const getAllRecipes = () => {
   return new Promise((resolve, reject) => {
     let recipess;
     setTimeout(() => {
-      recipess = recipes;
+      recipess = currentRecipes;
       resolve(recipess);
       return recipess;
     }, 2000);
@@ -26,6 +27,7 @@ const getAllRecipes = () => {
 };
 
 export const RecipesContextProvider = ({ children }) => {
+  const authCtx = useContext(AuthContext);
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,26 +41,86 @@ export const RecipesContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getRecipes();
-  }, []);
-  //   const tokenData = retrieveStoredToken();
-  //   let initialToken;
-  //   if (tokenData) {
-  //     initialToken = tokenData.token;
-  //   }
+    if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
+  }, [recipes, authCtx.isLoggedIn]);
 
-  //   const [token, setToken] = useState(initialToken);
+  const fetchRecipes = () => {
+    setIsLoading(true);
+    //MAKE THE FETCH TO THE FIREBASE USING THE authCtx.uid
+    setRecipes(recipes);
+    setIsLoading(false);
+  };
 
-  //   const userIsLoggedIn = !!token;
+  const addRecipe = async (recipe) => {
+    setRecipes((prev) => [...prev, recipe]);
+    console.log('recipe added');
+    console.log(recipes);
+
+    //add to firebase the recipe
+    // try {
+    //   await fetch(`https://jsonplaceholder.typicode.com/users/${authCtx.uid}`, {
+    //     method: 'PUT',
+    //     body: JSON.stringify(newUser),
+    //     headers: {
+    //       'Content-type': 'application/json; charset=UTF-8'
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // Revert changes in context state
+    // setError(true)
+    //MAYBE IT COULD BE
+    // setRecipes(prev => prev.filter(recipeItem => recipeItem.id !== recipe.id ))
+    // }
+  };
+
+  const deleteRecipe = async (recipeId) => {
+    const prevRecipes = [...recipes];
+    setRecipes(prevRecipes.filter((recipeItem) => recipeItem.id !== recipeId));
+
+    //add to firebase the recipe
+    // try {
+    //   await fetch(`https://jsonplaceholder.typicode.com/users/${authCtx.uid}`, {
+    //     method: 'PUT',
+    //     body: JSON.stringify(newUser),
+    //     headers: {
+    //       'Content-type': 'application/json; charset=UTF-8'
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // Revert changes in context state
+    // setError(true)
+    //MAYBE IT COULD BE
+    // setRecipes(prevRecipes)
+    // }
+  };
+
+  const editRecipe = async (recipe) => {
+    const prevRecipes = [...recipes];
+    const recipesEdited = recipes.map((recipeItem) => {
+      //if it's the edited return it, if not return the current recipe
+      if (recipeItem.id === recipe.id) {
+        return recipe;
+      }
+      return recipeItem;
+    });
+    setRecipes(recipesEdited);
+
+    //fetch API
+    //IF ERROR
+    //setRecipes(prevRecipes);
+  };
 
   const contextValue = {
     recipes,
     error,
     isLoading,
-    // token: token,
-    // isLoggedIn: userIsLoggedIn,
-    // login: loginHandler,
-    // logout: logoutHandler,
+    fetchRecipes,
+    addRecipe,
+    deleteRecipe,
+    editRecipe,
+    setRecipes,
   };
 
   return (

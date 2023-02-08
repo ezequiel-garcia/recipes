@@ -2,15 +2,19 @@ import { useContext } from 'react';
 
 import { NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
+import RecipesContext from '../store/recipes-context';
 import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
   const authCtx = useContext(AuthContext);
+  const recipesCtx = useContext(RecipesContext);
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     authCtx.logout();
+    recipesCtx.setRecipes([]);
     navigate('/');
+    console.log('logoutt');
   };
 
   return (

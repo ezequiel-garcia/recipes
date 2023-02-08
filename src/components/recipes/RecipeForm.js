@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { v4 as uuid } from 'uuid';
 import classes from './RecipeForm.module.css';
+import RecipesContext from '../store/recipes-context';
+import { useNavigate } from 'react-router-dom';
 
 const RecipeForm = ({ onSubmit }) => {
+  const navigation = useNavigate();
+  const recipeCtx = useContext(RecipesContext);
   const [recipe, setRecipe] = useState({
     name: '',
-    ingredients: '',
+    id: uuid(),
+    ingredients: [],
     instructions: '',
+    image:
+      'https://images.unsplash.com/photo-1506368249639-73a05d6f6488?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+    recipeImage: null,
+    isFavorite: false,
+    category: '',
   });
 
   const handleChange = (event) => {
@@ -14,7 +25,8 @@ const RecipeForm = ({ onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(recipe);
+    recipeCtx.addRecipe(recipe);
+    navigation('/recipes');
   };
 
   return (
