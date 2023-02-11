@@ -1,5 +1,15 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 
+import { db } from '../../firebase';
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  getDocs,
+} from 'firebase/firestore';
+
 //ESTO SACARLO DSPPP
 import { recipes as currentRecipes } from '../../DUMMY_DATA';
 import AuthContext from './auth-context';
@@ -33,12 +43,16 @@ export const RecipesContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getRecipes = () => {
+  const getRecipes = async () => {
     setIsLoading(true);
-    getAllRecipes().then((recipes) => {
-      setRecipes(recipes);
-      setIsLoading(false);
+    const querySnapshot = await getDocs(collection(db, authCtx.uid));
+    console.log(querySnapshot);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      setRecipes((prev) => [...prev, doc.data().recipe]);
+      console.log(doc.id, ' => ', doc.data().recipe);
     });
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -57,22 +71,21 @@ export const RecipesContextProvider = ({ children }) => {
     console.log('recipe added');
     console.log(recipes);
 
-    //add to firebase the recipe
-    // try {
-    //   await fetch(`https://jsonplaceholder.typicode.com/users/${authCtx.uid}`, {
-    //     method: 'PUT',
-    //     body: JSON.stringify(newUser),
-    //     headers: {
-    //       'Content-type': 'application/json; charset=UTF-8'
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // Revert changes in context state
-    // setError(true)
-    //MAYBE IT COULD BE
-    // setRecipes(prev => prev.filter(recipeItem => recipeItem.id !== recipe.id ))
-    // }
+    // Add the recipe to firebase
+    try {
+      const docRef = await setDoc(doc(db, authCtx.uid, recipe.id), {
+        recipe,
+      });
+      console.log('Document written with ID: ', docRef);
+    } catch (e) {
+      // If there is an error, remove the last element added to recipes in the context recipes
+      setError('Error adding the new Recipe');
+      console.error('Error adding document: ', e);
+      setRecipes((prev) => prev.slice(0, -1));
+      setRecipes((prev) =>
+        prev.filter((recipeItem) => recipeItem.id !== recipe.id)
+      );
+    }
   };
 
   const deleteRecipe = async (recipeId) => {
@@ -113,15 +126,38 @@ export const RecipesContextProvider = ({ children }) => {
     //setRecipes(prevRecipes);
   };
 
-  const toggleFavorite = (recipeId) => {
+  const toggleFavorite = async (recipeId) => {
+    let isFavorite;
     setRecipes((prev) =>
       prev.map((currentRecipe) => {
         if (currentRecipe.id === recipeId) {
+          isFavorite = !currentRecipe.isFavorite;
           return { ...currentRecipe, isFavorite: !currentRecipe.isFavorite };
         }
         return currentRecipe;
       })
     );
+
+    //Change in firebase
+    try {
+      const recipeRef = doc(db, authCtx.uid, recipeId);
+      // Change the favorite
+      await updateDoc(recipeRef, {
+        isFavorite: isFavorite,
+      });
+    } catch (e) {
+      setError('Error changing favorite');
+      //revert the isFavorite in context
+      setRecipes((prev) =>
+        prev.map((currentRecipe) => {
+          if (currentRecipe.id === recipeId) {
+            isFavorite = !currentRecipe.isFavorite;
+            return { ...currentRecipe, isFavorite: !currentRecipe.isFavorite };
+          }
+          return currentRecipe;
+        })
+      );
+    }
   };
 
   const contextValue = {

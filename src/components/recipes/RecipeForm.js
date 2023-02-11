@@ -5,11 +5,6 @@ import RecipesContext from '../store/recipes-context';
 import { useNavigate } from 'react-router-dom';
 import CategorySelector from './CategorySelector';
 
-//PROBANDOOOO
-import { db } from '../../firebase';
-import { collection, addDoc } from 'firebase/firestore';
-//PROBANDOOO
-
 const RecipeForm = ({ onSubmit }) => {
   const navigation = useNavigate();
   const recipeCtx = useContext(RecipesContext);
@@ -35,17 +30,6 @@ const RecipeForm = ({ onSubmit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    //PROBANDOOO
-    try {
-      const docRef = await addDoc(collection(db, 'recipes'), {
-        recipe,
-      });
-      console.log('Document written with ID: ', docRef.id);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-    //PROBANDO
 
     recipeCtx.addRecipe(recipe);
     navigation('/recipes');
