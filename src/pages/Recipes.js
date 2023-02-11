@@ -7,6 +7,7 @@ import classes from './Recipes.module.css';
 import { Link } from 'react-router-dom';
 import MainNavigation from '../components/nav/MainNavigation';
 import RecipesContext from '../components/store/recipes-context';
+import Loader from '../components/util/Loader';
 
 const RecipesPage = () => {
   const recipesCtx = useContext(RecipesContext);
@@ -37,7 +38,11 @@ const RecipesPage = () => {
           </Link>
         </div>
       </div>
-      {recipesCtx.isLoading && <p style={{ color: 'white' }}>Loading...</p>}
+      {recipesCtx.isLoading && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Loader />
+        </div>
+      )}
       <RecipesContainer recipes={allRecipes} />
     </>
   );

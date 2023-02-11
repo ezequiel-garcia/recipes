@@ -12,6 +12,7 @@ const RecipesContext = createContext({
   addRecipe: (recipe) => {},
   deleteRecipe: (recipeId) => {},
   editRecipe: (recipe) => {},
+  toggleFavorite: (recipeId) => {},
 });
 
 const getAllRecipes = () => {
@@ -112,6 +113,17 @@ export const RecipesContextProvider = ({ children }) => {
     //setRecipes(prevRecipes);
   };
 
+  const toggleFavorite = (recipeId) => {
+    setRecipes((prev) =>
+      prev.map((currentRecipe) => {
+        if (currentRecipe.id === recipeId) {
+          return { ...currentRecipe, isFavorite: !currentRecipe.isFavorite };
+        }
+        return currentRecipe;
+      })
+    );
+  };
+
   const contextValue = {
     recipes,
     error,
@@ -121,6 +133,7 @@ export const RecipesContextProvider = ({ children }) => {
     deleteRecipe,
     editRecipe,
     setRecipes,
+    toggleFavorite,
   };
 
   return (

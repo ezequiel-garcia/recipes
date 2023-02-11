@@ -1,15 +1,18 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import classes from './RecipeCard.module.css';
 import { FaHeart } from 'react-icons/fa';
+import RecipesContext from '../store/recipes-context';
 
 const RecipeCard = ({ recipe }) => {
+  const recipeCtx = useContext(RecipesContext);
   return (
     <div className={classes.recipe}>
       <FaHeart
         className={`${classes.favorite} ${
           recipe.isFavorite ? classes.isFavorite : ''
         }`}
-        onClick={() => console.log('first')}
+        onClick={() => recipeCtx.toggleFavorite(recipe.id)}
       />
       <Link to={`/recipes/${recipe.id}`}>
         <div className={classes.img}>

@@ -3,6 +3,12 @@ import { v4 as uuid } from 'uuid';
 import classes from './RecipeForm.module.css';
 import RecipesContext from '../store/recipes-context';
 import { useNavigate } from 'react-router-dom';
+import CategorySelector from './CategorySelector';
+
+//PROBANDOOOO
+import { db } from '../../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+//PROBANDOOO
 
 const RecipeForm = ({ onSubmit }) => {
   const navigation = useNavigate();
@@ -23,14 +29,30 @@ const RecipeForm = ({ onSubmit }) => {
     setRecipe({ ...recipe, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSelectCategory = (selectedCategory) => {
+    setRecipe({ ...recipe, category: selectedCategory });
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    //PROBANDOOO
+    try {
+      const docRef = await addDoc(collection(db, 'recipes'), {
+        recipe,
+      });
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+    //PROBANDO
+
     recipeCtx.addRecipe(recipe);
     navigation('/recipes');
   };
 
   return (
-    <div className={classes.container}>
+    <div className={classes.containerForm}>
       <form onSubmit={handleSubmit} className={classes.form}>
         <div>
           <label htmlFor="name">Recipe Name:</label>
@@ -40,6 +62,13 @@ const RecipeForm = ({ onSubmit }) => {
             name="name"
             value={recipe.name}
             onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label>Category</label>
+          <CategorySelector
+            onChange={handleSelectCategory}
+            style={{ width: '100%' }}
           />
         </div>
         <div>
