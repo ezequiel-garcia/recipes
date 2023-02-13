@@ -91,6 +91,7 @@ const AuthForm = () => {
         const expirationTime = new Date(
           new Date().getTime() + +res.data.expiresIn * 1000
         );
+
         authCtx.login(
           res.data.idToken,
           expirationTime.toISOString(),

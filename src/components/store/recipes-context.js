@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { db } from '../../firebase';
 import {
@@ -49,14 +50,24 @@ export const RecipesContextProvider = ({ children }) => {
     console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      setRecipes((prev) => [...prev, doc.data().recipe]);
-      console.log(doc.id, ' => ', doc.data().recipe);
+      setRecipes((prev) => [...prev, doc.data()]);
+      console.log(doc.id, ' => ', doc.data());
     });
     setIsLoading(false);
   };
 
   useEffect(() => {
+    // If the user is loggedOut, refresh the page to go back to authentication page
+    if (
+      !authCtx.isLoggedIn &&
+      window.location.pathname !== '/' &&
+      window.location.pathname !== '/authentication'
+    )
+      window.location.reload();
+
+    //If there is not recipes and the user is LogedIn get the recipes from the DB
     if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
+    console.log('entered');
   }, [recipes, authCtx.isLoggedIn]);
 
   const fetchRecipes = () => {
@@ -74,7 +85,7 @@ export const RecipesContextProvider = ({ children }) => {
     // Add the recipe to firebase
     try {
       const docRef = await setDoc(doc(db, authCtx.uid, recipe.id), {
-        recipe,
+        ...recipe,
       });
       console.log('Document written with ID: ', docRef);
     } catch (e) {
@@ -126,12 +137,10 @@ export const RecipesContextProvider = ({ children }) => {
     //setRecipes(prevRecipes);
   };
 
-  const toggleFavorite = async (recipeId) => {
-    let isFavorite;
+  const toggleFavorite = async (recipe) => {
     setRecipes((prev) =>
       prev.map((currentRecipe) => {
-        if (currentRecipe.id === recipeId) {
-          isFavorite = !currentRecipe.isFavorite;
+        if (currentRecipe.id === recipe.id) {
           return { ...currentRecipe, isFavorite: !currentRecipe.isFavorite };
         }
         return currentRecipe;
@@ -140,18 +149,18 @@ export const RecipesContextProvider = ({ children }) => {
 
     //Change in firebase
     try {
-      const recipeRef = doc(db, authCtx.uid, recipeId);
+      const recipeRef = doc(db, authCtx.uid, recipe.id);
       // Change the favorite
       await updateDoc(recipeRef, {
-        isFavorite: isFavorite,
+        isFavorite: recipe.isFavorite,
       });
     } catch (e) {
+      console.log(e);
       setError('Error changing favorite');
       //revert the isFavorite in context
       setRecipes((prev) =>
         prev.map((currentRecipe) => {
-          if (currentRecipe.id === recipeId) {
-            isFavorite = !currentRecipe.isFavorite;
+          if (currentRecipe.id === recipe.id) {
             return { ...currentRecipe, isFavorite: !currentRecipe.isFavorite };
           }
           return currentRecipe;

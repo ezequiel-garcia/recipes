@@ -12,7 +12,7 @@ const RecipeCard = ({ recipe }) => {
         className={`${classes.favorite} ${
           recipe.isFavorite ? classes.isFavorite : ''
         }`}
-        onClick={() => recipeCtx.toggleFavorite(recipe.id)}
+        onClick={() => recipeCtx.toggleFavorite(recipe)}
       />
       <Link to={`/recipes/${recipe.id}`}>
         <div className={classes.img}>
