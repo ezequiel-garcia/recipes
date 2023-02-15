@@ -28,6 +28,12 @@ const RecipeForm = ({ onSubmit }) => {
     setRecipe({ ...recipe, category: selectedCategory });
   };
 
+  const handleImagePicker = (e) => {
+    const selectedFile = e.target.files[0];
+    //setFile(selectedFile);
+    setRecipe({ ...recipe, image: URL.createObjectURL(selectedFile) });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -73,6 +79,21 @@ const RecipeForm = ({ onSubmit }) => {
             onChange={handleChange}
           />
         </div>
+        <div>
+          <label htmlFor="name">Recipe Image:</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleImagePicker}
+          />
+          <img
+            src={recipe.image}
+            alt="recipe"
+            style={{ height: '15rem', width: '15rem', objectFit: 'cover' }}
+          />
+        </div>
+
         <button type="submit">Create Recipe</button>
       </form>
     </div>
