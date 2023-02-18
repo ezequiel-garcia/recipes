@@ -13,6 +13,7 @@ import {
 //ESTO SACARLO DSPPP
 import { recipes as currentRecipes } from '../../DUMMY_DATA';
 import AuthContext from './auth-context';
+import { uploadImageAndGetURL } from '../util/images';
 
 const RecipesContext = createContext({
   recipes: [],
@@ -66,7 +67,6 @@ export const RecipesContextProvider = ({ children }) => {
 
     //If there is not recipes and the user is LogedIn get the recipes from the DB
     if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
-    console.log('entered');
   }, [recipes, authCtx.isLoggedIn]);
 
   const fetchRecipes = () => {
@@ -77,16 +77,20 @@ export const RecipesContextProvider = ({ children }) => {
   };
 
   const addRecipe = async (recipe) => {
+    // add the recipe to recipes context
     setRecipes((prev) => [...prev, recipe]);
-    console.log('recipe added');
-    console.log(recipes);
 
     // Add the recipe to firebase
     try {
-      const docRef = await setDoc(doc(db, authCtx.uid, recipe.id), {
-        ...recipe,
+      // upload the image to db storage and then put the url into recipe
+      const recipeImageUrl = await uploadImageAndGetURL(
+        recipe.image,
+        recipe.id
+      );
+      const recipeWithPicture = { ...recipe, image: recipeImageUrl };
+      const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+        ...recipeWithPicture,
       });
-      console.log('Document written with ID: ', docRef);
     } catch (e) {
       // If there is an error, remove the last element added to recipes in the context recipes
       setError('Error adding the new Recipe');
@@ -151,7 +155,7 @@ export const RecipesContextProvider = ({ children }) => {
       const recipeRef = doc(db, authCtx.uid, recipe.id);
       // Change the favorite
       await updateDoc(recipeRef, {
-        isFavorite: recipe.isFavorite,
+        isFavorite: !recipe.isFavorite,
       });
     } catch (e) {
       console.log(e);

@@ -4,9 +4,7 @@ import classes from './RecipeForm.module.css';
 import RecipesContext from '../store/recipes-context';
 import { useNavigate } from 'react-router-dom';
 import CategorySelector from './CategorySelector';
-
-//REMOVE
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { resizeImage } from '../util/images';
 
 const RecipeForm = ({ onSubmit }) => {
   const navigation = useNavigate();
@@ -33,38 +31,10 @@ const RecipeForm = ({ onSubmit }) => {
 
   const handleImagePicker = async (e) => {
     const selectedFile = e.target.files[0];
-    console.log(JSON.stringify(selectedFile) + '--> selected');
+    const imageResized = resizeImage(selectedFile);
+    console.log(imageResized);
     //setFile(selectedFile);
     setRecipe({ ...recipe, image: URL.createObjectURL(selectedFile) });
-
-    // Create a root reference
-    const storage = getStorage();
-
-    // Create a reference to 'mountains.jpg'
-    // const mountainsRef = ref(storage, 'mountains.jpg');
-
-    // Create a reference to 'images/mountains.jpg'
-    const storageRef = ref(storage, `recipesImages/${recipe.id}`);
-
-    const response = await fetch(URL.createObjectURL(selectedFile));
-
-    const blob = await response.blob();
-    console.log(blob);
-
-    uploadBytes(storageRef, blob)
-      .then(async (snapshot) => {
-        // console.log('Uploaded a blob or file!');
-        try {
-          const url = await getDownloadURL(storageRef);
-          // updateEventImage(url, eventId);
-          console.log(url);
-        } catch (e) {
-          console.log(e);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   };
 
   const handleSubmit = async (event) => {
