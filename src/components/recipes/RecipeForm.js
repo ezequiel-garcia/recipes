@@ -20,6 +20,11 @@ const RecipeForm = ({ onSubmit }) => {
     isFavorite: false,
     category: 'Main Course',
   });
+  const [errors, setErrors] = useState({
+    name: false,
+    // ingredients: false,
+    incomplete: false,
+  });
 
   const handleChange = (event) => {
     setRecipe({ ...recipe, [event.target.name]: event.target.value });
@@ -40,6 +45,11 @@ const RecipeForm = ({ onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (recipe.name === '') {
+      setErrors({ ...errors, name: true });
+      return;
+    }
+
     recipeCtx.addRecipe(recipe);
     navigation('/recipes');
   };
@@ -55,6 +65,7 @@ const RecipeForm = ({ onSubmit }) => {
             name="name"
             value={recipe.name}
             onChange={handleChange}
+            className={errors.name ? classes.error : ''}
           />
         </div>
         <div>
