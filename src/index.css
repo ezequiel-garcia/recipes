@@ -17,3 +17,7 @@ code {
 }
 
 input{box-sizing:border-box} 
+
+button{
+  all: unset;
+}

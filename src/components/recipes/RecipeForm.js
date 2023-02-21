@@ -27,6 +27,8 @@ const RecipeForm = ({ onSubmit }) => {
   });
 
   const handleChange = (event) => {
+    //reset any error
+    setErrors((prev) => ({ ...prev, name: false, incomplete: false }));
     setRecipe({ ...recipe, [event.target.name]: event.target.value });
   };
 
@@ -46,7 +48,8 @@ const RecipeForm = ({ onSubmit }) => {
     event.preventDefault();
 
     if (recipe.name === '') {
-      setErrors({ ...errors, name: true });
+      setErrors((prev) => ({ ...prev, name: true }));
+
       return;
     }
 
@@ -59,6 +62,11 @@ const RecipeForm = ({ onSubmit }) => {
       <form onSubmit={handleSubmit} className={classes.form}>
         <div>
           <label htmlFor="name">Recipe Name:</label>
+          {errors.name && (
+            <p className={classes['error-text']}>
+              You have to complete the name
+            </p>
+          )}
           <input
             type="text"
             id="name"
@@ -82,6 +90,7 @@ const RecipeForm = ({ onSubmit }) => {
             name="ingredients"
             value={recipe.ingredients}
             onChange={handleChange}
+            rows={5}
           />
         </div>
         <div>
@@ -91,16 +100,22 @@ const RecipeForm = ({ onSubmit }) => {
             name="instructions"
             value={recipe.instructions}
             onChange={handleChange}
+            rows={5}
           />
         </div>
         <div>
           <label htmlFor="name">Recipe Image:</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleImagePicker}
-          />
+          <label className={classes['select-image-label']}>
+            Select Image
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              onChange={handleImagePicker}
+              style={{ display: 'none' }}
+            />
+          </label>
           <img
             src={recipe.image}
             alt="recipe"
@@ -108,7 +123,12 @@ const RecipeForm = ({ onSubmit }) => {
           />
         </div>
 
-        <button type="submit">Create Recipe</button>
+        <button
+          type="submit"
+          className={`${classes['select-image-label']} ${classes['create-button']}`}
+        >
+          Create Recipe
+        </button>
       </form>
     </div>
   );

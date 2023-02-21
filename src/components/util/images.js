@@ -34,7 +34,7 @@ export const resizeImage = (image) => {
       400, // New width in pixels
       400, // New height in pixels
       'PNG', // Output format
-      60, // Output quality (0 to 100)
+      40, // Output quality (0 to 100)
       0, // Rotation in degrees (0 to 360)
       (uri) => {
         console.log(uri);
