@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import RecipesContext from '../components/store/recipes-context';
+import RecipeView from '../components/recipes/RecipeView';
 
 const RecipeDetailPage = () => {
   const recipesCtx = useContext(RecipesContext);
@@ -10,16 +11,10 @@ const RecipeDetailPage = () => {
   console.log(recipe);
 
   // make the line break in the \n
-  function replaceWithBr() {
-    return recipe.ingredients.replace(/\n/g, '<br />');
-  }
 
   return (
     <div>
-      <h1
-        style={{ color: 'white' }}
-        dangerouslySetInnerHTML={{ __html: replaceWithBr() }}
-      />
+      <RecipeView recipe={recipe} />
     </div>
   );
 };
