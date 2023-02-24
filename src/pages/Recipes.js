@@ -43,7 +43,7 @@ const RecipesPage = () => {
           <Loader />
         </div>
       )}
-      <RecipesContainer recipes={allRecipes} />
+      <RecipesContainer recipes={allRecipes} loading={recipesCtx.isLoading} />
     </>
   );
 };

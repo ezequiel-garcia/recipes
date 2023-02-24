@@ -8,9 +8,10 @@ const RecipeDetailPage = () => {
   const { recipeId } = useParams();
 
   const recipe = recipesCtx.recipes.find((recipe) => recipe.id === recipeId);
-  console.log(recipe);
 
-  // make the line break in the \n
+  if (recipesCtx.recipes.length > 0 && !recipe) {
+    throw new Error('NO RECIPE FOUND');
+  }
 
   return (
     <div>
