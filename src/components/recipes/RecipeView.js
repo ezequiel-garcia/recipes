@@ -1,5 +1,6 @@
 import Loader from '../util/Loader';
 import classes from './RecipeView.module.css';
+import { AiTwotoneDelete } from 'react-icons/ai';
 
 const RecipeView = ({ recipe }) => {
   if (!recipe) {
@@ -28,7 +29,17 @@ const RecipeView = ({ recipe }) => {
 
   return (
     <div className={classes.container}>
-      <h1 style={{ color: 'white' }}>{recipe.name}</h1>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <h1 style={{ color: 'white' }}>{recipe.name}</h1>
+        <button className={classes['edit-button']}>Edit</button>
+      </div>
 
       <img
         src={recipe.image}
@@ -55,6 +66,12 @@ const RecipeView = ({ recipe }) => {
           <p dangerouslySetInnerHTML={instructions} />
         </div>
       )}
+      <button className={classes['delete-button']}>
+        <AiTwotoneDelete
+          size={40}
+          style={{ color: '#f64040', fontWeight: '1rem' }}
+        />
+      </button>
     </div>
   );
 };

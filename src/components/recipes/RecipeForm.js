@@ -119,7 +119,8 @@ const RecipeForm = ({ onSubmit }) => {
           <img
             src={recipe.image}
             alt="recipe"
-            style={{ height: '15rem', width: '15rem', objectFit: 'cover' }}
+            // style={{ height: '15rem', width: '15rem', objectFit: 'cover' }}
+            className={classes['recipe-image']}
           />
         </div>
 
