@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import RecipesContext from '../components/store/recipes-context';
 import RecipeView from '../components/recipes/RecipeView';
+import { useNavigate } from 'react-router-dom';
 
 const RecipeDetailPage = () => {
   const recipesCtx = useContext(RecipesContext);
@@ -10,7 +11,7 @@ const RecipeDetailPage = () => {
   const recipe = recipesCtx.recipes.find((recipe) => recipe.id === recipeId);
 
   if (recipesCtx.recipes.length > 0 && !recipe) {
-    throw new Error('NO RECIPE FOUND');
+    //throw new Error('NO RECIPE FOUND');
   }
 
   return (

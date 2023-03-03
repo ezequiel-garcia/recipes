@@ -7,6 +7,7 @@ import {
   doc,
   setDoc,
   updateDoc,
+  deleteDoc,
   getDocs,
 } from 'firebase/firestore';
 
@@ -105,6 +106,14 @@ export const RecipesContextProvider = ({ children }) => {
   const deleteRecipe = async (recipeId) => {
     const prevRecipes = [...recipes];
     setRecipes(prevRecipes.filter((recipeItem) => recipeItem.id !== recipeId));
+
+    try {
+      await deleteDoc(doc(db, authCtx.uid, recipeId));
+    } catch (error) {
+      console.log(error);
+      setError('Error deleting recipe from db');
+      setRecipes(prevRecipes);
+    }
 
     //add to firebase the recipe
     // try {

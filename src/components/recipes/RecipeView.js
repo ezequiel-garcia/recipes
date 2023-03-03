@@ -1,8 +1,21 @@
+import { useContext } from 'react';
 import Loader from '../util/Loader';
 import classes from './RecipeView.module.css';
 import { AiTwotoneDelete } from 'react-icons/ai';
+import RecipesContext from '../store/recipes-context';
+import { useNavigate } from 'react-router-dom';
 
 const RecipeView = ({ recipe }) => {
+  const recipeCtx = useContext(RecipesContext);
+  const navigation = useNavigate();
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete?') === true) {
+      navigation('/recipes');
+      recipeCtx.deleteRecipe(id);
+    }
+  };
+
   if (!recipe) {
     return (
       <div
@@ -66,7 +79,10 @@ const RecipeView = ({ recipe }) => {
           <p dangerouslySetInnerHTML={instructions} />
         </div>
       )}
-      <button className={classes['delete-button']}>
+      <button
+        className={classes['delete-button']}
+        onClick={() => handleDelete(recipe.id)}
+      >
         <AiTwotoneDelete
           size={40}
           style={{ color: '#f64040', fontWeight: '1rem' }}
