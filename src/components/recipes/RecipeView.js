@@ -51,7 +51,12 @@ const RecipeView = ({ recipe }) => {
         }}
       >
         <h1 style={{ color: 'white' }}>{recipe.name}</h1>
-        <button className={classes['edit-button']}>Edit</button>
+        <button
+          className={classes['edit-button']}
+          onClick={() => navigation(`/edit/${recipe.id}`)}
+        >
+          Edit
+        </button>
       </div>
 
       <img

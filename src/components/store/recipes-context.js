@@ -27,18 +27,6 @@ const RecipesContext = createContext({
   toggleFavorite: (recipeId) => {},
 });
 
-const getAllRecipes = () => {
-  return new Promise((resolve, reject) => {
-    let recipess;
-    setTimeout(() => {
-      recipess = currentRecipes;
-      resolve(recipess);
-      return recipess;
-    }, 2000);
-    // return recipess;
-  });
-};
-
 export const RecipesContextProvider = ({ children }) => {
   const authCtx = useContext(AuthContext);
   const [recipes, setRecipes] = useState([]);
@@ -70,11 +58,13 @@ export const RecipesContextProvider = ({ children }) => {
     if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
   }, [recipes, authCtx.isLoggedIn]);
 
-  const fetchRecipes = () => {
-    setIsLoading(true);
-    //MAKE THE FETCH TO THE FIREBASE USING THE authCtx.uid
-    setRecipes(recipes);
-    setIsLoading(false);
+  const uploadToFirebase = async (recipe) => {
+    // upload the image to db storage and then put the url into recipe
+    const recipeImageUrl = await uploadImageAndGetURL(recipe.image, recipe.id);
+    const recipeWithPicture = { ...recipe, image: recipeImageUrl };
+    const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+      ...recipeWithPicture,
+    });
   };
 
   const addRecipe = async (recipe) => {
@@ -97,9 +87,9 @@ export const RecipesContextProvider = ({ children }) => {
       setError('Error adding the new Recipe');
       console.error('Error adding document: ', e);
       setRecipes((prev) => prev.slice(0, -1));
-      setRecipes((prev) =>
-        prev.filter((recipeItem) => recipeItem.id !== recipe.id)
-      );
+      // setRecipes((prev) =>
+      //   prev.filter((recipeItem) => recipeItem.id !== recipe.id)
+      // );
     }
   };
 
@@ -144,9 +134,25 @@ export const RecipesContextProvider = ({ children }) => {
     });
     setRecipes(recipesEdited);
 
-    //fetch API
-    //IF ERROR
-    //setRecipes(prevRecipes);
+    // uploading data to firebase
+    try {
+      // upload the image to db storage and then put the url into recipe
+      const recipeImageUrl = await uploadImageAndGetURL(
+        recipe.image,
+        recipe.id
+      );
+      // If there is not a new recipeImageUrl use the current one
+      const recipeWithPicture = recipeImageUrl
+        ? { ...recipe, image: recipeImageUrl }
+        : { ...recipe };
+      const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+        ...recipeWithPicture,
+      });
+    } catch (e) {
+      setRecipes(prevRecipes);
+      setError('Error updating Recipe');
+      console.error('Error updating Recipe: ', e);
+    }
   };
 
   const toggleFavorite = async (recipe) => {
@@ -185,7 +191,6 @@ export const RecipesContextProvider = ({ children }) => {
     recipes,
     error,
     isLoading,
-    fetchRecipes,
     addRecipe,
     deleteRecipe,
     editRecipe,

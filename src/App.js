@@ -30,6 +30,12 @@ const router = createBrowserRouter([
     loader: checkAuthLoader,
   },
   { path: 'new', element: <NewRecipePage />, loader: checkAuthLoader },
+  {
+    path: 'edit/:recipeId',
+    element: <NewRecipePage />,
+    loader: checkAuthLoader,
+  },
+
   { path: '*', loader: () => redirect('/') }, // Maybe add a 404 page
 ]);
 

@@ -2,32 +2,30 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Resizer from 'react-image-file-resizer';
 
 export const uploadImageAndGetURL = async (image, recipeId) => {
+  console.log(image);
   // Create a root reference
   const storage = getStorage();
+  let dbURL = null;
 
   // Create a reference to 'recipeImages/recipeId'
   const storageRef = ref(storage, `recipesImages/${recipeId}`);
 
   // const response = await fetch(URL.createObjectURL(image));
-  const response = await fetch(image);
-  // Convert image to blob before upload to database
-  const blob = await response.blob();
-  const dbURL = uploadBytes(storageRef, blob)
-    .then(async (snapshot) => {
-      try {
-        const url = await getDownloadURL(storageRef);
-        return url;
-      } catch (e) {
-        console.log(e);
-      }
-    })
-    .catch((e) => {
-      console.log(e);
+  try {
+    const response = await fetch(image);
+    // Convert image to blob before upload to database
+    const blob = await response.blob();
+    dbURL = uploadBytes(storageRef, blob).then(async (snapshot) => {
+      const url = await getDownloadURL(storageRef);
+      return url;
     });
+  } catch (e) {
+    console.log(e);
+  }
   return dbURL;
 };
 
-export const resizeImage = (image) => {
+export const resizeImage = (image) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       image,
@@ -43,4 +41,3 @@ export const resizeImage = (image) => {
       'blob' // Output type
     );
   });
-};

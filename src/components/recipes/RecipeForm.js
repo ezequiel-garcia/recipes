@@ -6,20 +6,24 @@ import { useNavigate } from 'react-router-dom';
 import CategorySelector from './CategorySelector';
 import { resizeImage } from '../util/images';
 
-const RecipeForm = ({ onSubmit }) => {
+const RecipeForm = ({ recipeForEdit }) => {
   const navigation = useNavigate();
   const recipeCtx = useContext(RecipesContext);
-  const [recipe, setRecipe] = useState({
-    name: '',
-    id: uuid(),
-    ingredients: '',
-    instructions: '',
-    image:
-      'https://images.unsplash.com/photo-1506368249639-73a05d6f6488?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-    recipeImage: null,
-    isFavorite: false,
-    category: 'Main Course',
-  });
+  const [recipe, setRecipe] = useState(
+    !recipeForEdit
+      ? {
+          name: '',
+          id: uuid(),
+          ingredients: '',
+          instructions: '',
+          image:
+            'https://images.unsplash.com/photo-1506368249639-73a05d6f6488?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+          recipeImage: null,
+          isFavorite: false,
+          category: 'Main Course',
+        }
+      : recipeForEdit
+  );
   const [errors, setErrors] = useState({
     name: false,
     // ingredients: false,
@@ -38,10 +42,10 @@ const RecipeForm = ({ onSubmit }) => {
 
   const handleImagePicker = async (e) => {
     const selectedFile = e.target.files[0];
-    const imageResized = resizeImage(selectedFile);
-    console.log(imageResized);
+    const imageResized = await resizeImage(selectedFile);
+    console.log(imageResized + 'image resized');
     //setFile(selectedFile);
-    setRecipe({ ...recipe, image: URL.createObjectURL(selectedFile) });
+    setRecipe({ ...recipe, image: URL.createObjectURL(imageResized) });
   };
 
   const handleSubmit = async (event) => {
@@ -52,8 +56,12 @@ const RecipeForm = ({ onSubmit }) => {
 
       return;
     }
+    if (!recipeForEdit) {
+      recipeCtx.addRecipe(recipe);
+    } else {
+      recipeCtx.editRecipe(recipe);
+    }
 
-    recipeCtx.addRecipe(recipe);
     navigation('/recipes');
   };
 
@@ -119,7 +127,6 @@ const RecipeForm = ({ onSubmit }) => {
           <img
             src={recipe.image}
             alt="recipe"
-            // style={{ height: '15rem', width: '15rem', objectFit: 'cover' }}
             className={classes['recipe-image']}
           />
         </div>
