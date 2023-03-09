@@ -3,16 +3,14 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import { db } from '../../firebase';
 import {
   collection,
-  addDoc,
   doc,
   setDoc,
   updateDoc,
   deleteDoc,
   getDocs,
 } from 'firebase/firestore';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 
-//ESTO SACARLO DSPPP
-import { recipes as currentRecipes } from '../../DUMMY_DATA';
 import AuthContext from './auth-context';
 import { uploadImageAndGetURL } from '../util/images';
 
@@ -35,13 +33,19 @@ export const RecipesContextProvider = ({ children }) => {
 
   const getRecipes = async () => {
     setIsLoading(true);
-    const querySnapshot = await getDocs(collection(db, authCtx.uid));
-    console.log(querySnapshot);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      setRecipes((prev) => [...prev, doc.data()]);
-      console.log(doc.id, ' => ', doc.data());
-    });
+    try {
+      const querySnapshot = await getDocs(collection(db, authCtx.uid));
+      console.log(querySnapshot);
+
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        setRecipes((prev) => [...prev, doc.data()]);
+        console.log(doc.id, ' => ', doc.data());
+      });
+    } catch (e) {
+      console.log(e);
+      setError(e);
+    }
     setIsLoading(false);
   };
 
@@ -58,14 +62,14 @@ export const RecipesContextProvider = ({ children }) => {
     if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
   }, [recipes, authCtx.isLoggedIn]);
 
-  const uploadToFirebase = async (recipe) => {
-    // upload the image to db storage and then put the url into recipe
-    const recipeImageUrl = await uploadImageAndGetURL(recipe.image, recipe.id);
-    const recipeWithPicture = { ...recipe, image: recipeImageUrl };
-    const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
-      ...recipeWithPicture,
-    });
-  };
+  // const uploadToFirebase = async (recipe) => {
+  //   // upload the image to db storage and then put the url into recipe
+  //   const recipeImageUrl = await uploadImageAndGetURL(recipe.image, recipe.id);
+  //   const recipeWithPicture = { ...recipe, image: recipeImageUrl };
+  //   await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+  //     ...recipeWithPicture,
+  //   });
+  // };
 
   const addRecipe = async (recipe) => {
     // add the recipe to recipes context
@@ -79,7 +83,7 @@ export const RecipesContextProvider = ({ children }) => {
         recipe.id
       );
       const recipeWithPicture = { ...recipe, image: recipeImageUrl };
-      const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+      await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
         ...recipeWithPicture,
       });
     } catch (e) {
@@ -94,33 +98,22 @@ export const RecipesContextProvider = ({ children }) => {
   };
 
   const deleteRecipe = async (recipeId) => {
+    //references to delete recipe's picture
+    const storage = getStorage();
+    const desertRef = ref(storage, `recipesImages/${recipeId}`);
+
     const prevRecipes = [...recipes];
     setRecipes(prevRecipes.filter((recipeItem) => recipeItem.id !== recipeId));
 
     try {
       await deleteDoc(doc(db, authCtx.uid, recipeId));
+      // Delete the picture
+      await deleteObject(desertRef);
     } catch (error) {
       console.log(error);
       setError('Error deleting recipe from db');
       setRecipes(prevRecipes);
     }
-
-    //add to firebase the recipe
-    // try {
-    //   await fetch(`https://jsonplaceholder.typicode.com/users/${authCtx.uid}`, {
-    //     method: 'PUT',
-    //     body: JSON.stringify(newUser),
-    //     headers: {
-    //       'Content-type': 'application/json; charset=UTF-8'
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // Revert changes in context state
-    // setError(true)
-    //MAYBE IT COULD BE
-    // setRecipes(prevRecipes)
-    // }
   };
 
   const editRecipe = async (recipe) => {
@@ -145,7 +138,7 @@ export const RecipesContextProvider = ({ children }) => {
       const recipeWithPicture = recipeImageUrl
         ? { ...recipe, image: recipeImageUrl }
         : { ...recipe };
-      const docRef = await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
+      await setDoc(doc(db, authCtx.uid, recipeWithPicture.id), {
         ...recipeWithPicture,
       });
     } catch (e) {

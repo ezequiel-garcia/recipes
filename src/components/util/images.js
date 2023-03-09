@@ -2,7 +2,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Resizer from 'react-image-file-resizer';
 
 export const uploadImageAndGetURL = async (image, recipeId) => {
-  console.log(image);
   // Create a root reference
   const storage = getStorage();
   let dbURL = null;
@@ -35,7 +34,6 @@ export const resizeImage = (image) =>
       40, // Output quality (0 to 100)
       0, // Rotation in degrees (0 to 360)
       (uri) => {
-        console.log(uri);
         resolve(uri);
       },
       'blob' // Output type

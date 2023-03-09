@@ -1,9 +1,15 @@
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Loader from '../util/Loader';
 import classes from './AuthForm.module.css';
 import AuthContext from '../store/auth-context';
 import { useNavigate } from 'react-router-dom';
+
+import { auth } from '../../firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -16,6 +22,10 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (authCtx.isLoggedIn) navigate('/recipes');
+  }, [authCtx.isLoggedIn, navigate]);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -56,8 +66,12 @@ const AuthForm = () => {
     let url;
     if (isLogin) {
       url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_WEB_KEY}`;
+      //using the auth so I can do requests to using the SDK
+      signInWithEmailAndPassword(auth, enteredEmail, enteredPassword);
     } else {
       url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_WEB_KEY}`;
+      //using the auth so I can do requests to using the SDK
+      createUserWithEmailAndPassword(auth, enteredEmail, enteredPassword);
       //   fetch(
       //     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_WEB_KEY}`,
       //     {
@@ -97,7 +111,6 @@ const AuthForm = () => {
           expirationTime.toISOString(),
           res.data.localId
         );
-        navigate('/recipes');
       })
       .catch((error) => {
         console.log(error);
@@ -107,6 +120,15 @@ const AuthForm = () => {
 
         alert(errorMessage);
       });
+  };
+
+  const googleLogin = () => {
+    try {
+      authCtx.loginWithGoogle();
+      navigate('/recipes');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -158,6 +180,13 @@ const AuthForm = () => {
             </button>
           </div>
         </form>
+        <button onClick={googleLogin} className={classes.mediaButton}>
+          <img
+            src={require('../../assets/google-login.png')}
+            alt="google logo"
+          />
+          <p>Login with Google</p>
+        </button>
       </div>
     </div>
   );

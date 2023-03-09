@@ -1,4 +1,11 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+import { auth } from '../../firebase';
 
 let logoutTimer;
 
@@ -8,6 +15,7 @@ const AuthContext = createContext({
   isLoggedIn: false,
   login: (token) => {},
   logout: () => {},
+  loginWithGoogle: () => {},
 });
 
 const calculateRemainingTime = (expirationTime) => {
@@ -53,6 +61,7 @@ export const AuthContextProvider = ({ children }) => {
   const userIsLoggedIn = !!token;
 
   const logoutHandler = useCallback(() => {
+    signOut(auth).catch((e) => console.log(e));
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('expirationTime');
@@ -62,6 +71,28 @@ export const AuthContextProvider = ({ children }) => {
       clearTimeout(logoutTimer);
     }
   }, []);
+
+  const loginWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        const expiration = new Date(
+          new Date().getTime() + +result._tokenResponse.expiresIn * 1000
+        );
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+        loginHandler(user.accessToken, expiration, user.uid);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle Errors here.
+        console.log(GoogleAuthProvider.credentialFromError(error));
+      });
+  };
 
   const loginHandler = (token, expirationTime, uid) => {
     setToken(token);
@@ -87,6 +118,7 @@ export const AuthContextProvider = ({ children }) => {
     uid,
     login: loginHandler,
     logout: logoutHandler,
+    loginWithGoogle,
   };
 
   return (
