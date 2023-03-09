@@ -35,12 +35,10 @@ export const RecipesContextProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, authCtx.uid));
-      console.log(querySnapshot);
 
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         setRecipes((prev) => [...prev, doc.data()]);
-        console.log(doc.id, ' => ', doc.data());
       });
     } catch (e) {
       console.log(e);

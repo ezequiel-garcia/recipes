@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 import {
-  getAuth,
+  onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
@@ -60,6 +60,19 @@ export const AuthContextProvider = ({ children }) => {
 
   const userIsLoggedIn = !!token;
 
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user);
+      loginHandler(
+        user.accessToken,
+        user.stsTokenManager?.expirationTime,
+        user.uid
+      );
+    } else {
+      logoutHandler();
+    }
+  });
+
   const logoutHandler = useCallback(() => {
     signOut(auth).catch((e) => console.log(e));
     setToken(null);
@@ -78,13 +91,11 @@ export const AuthContextProvider = ({ children }) => {
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // const credential = GoogleAuthProvider.credentialFromResult(result);
-        const expiration = new Date(
-          new Date().getTime() + +result._tokenResponse.expiresIn * 1000
-        );
+        const expiration = result._tokenResponse.expiresIn;
+
         // The signed-in user info.
         const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+
         loginHandler(user.accessToken, expiration, user.uid);
       })
       .catch((error) => {
@@ -94,11 +105,14 @@ export const AuthContextProvider = ({ children }) => {
       });
   };
 
+  const loginWithEmailAndPassword = (email, password) => {};
+
   const loginHandler = (token, expirationTime, uid) => {
+    const expiration = new Date(new Date().getTime() + +expirationTime * 1000);
     setToken(token);
     setUid(uid);
     localStorage.setItem('token', token);
-    localStorage.setItem('expirationTime', expirationTime);
+    localStorage.setItem('expirationTime', expiration);
     localStorage.setItem('uid', uid);
     const remainingTime = calculateRemainingTime(expirationTime);
 

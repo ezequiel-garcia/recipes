@@ -1,3 +1,13 @@
+.auth-container{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* padding: .3rem; */
+    
+    
+}
+
 .auth {
     margin: 0 auto;
     width: 100%;
@@ -6,7 +16,7 @@
     background-color: #05050591;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     /* padding: .5rem; */
-    text-align: center;
+    /* text-align: start; */
   }
 
   @media(min-width: 480px){
@@ -18,18 +28,22 @@
   
   .auth h1 {
     text-align: center;
+    font-family: aboreto;
     color: white;
   }
   
   .control {
     margin-bottom: 0.5rem;
+    /* text-align: start; */
+    padding: .3rem;
   }
   
   .control label {
     display: block;
     color: white;
-    font-weight: bold;
+    font-weight: 500;
     margin-bottom: 0.5rem;
+    text-align: start;
   }
   
   .control input {
@@ -56,13 +70,14 @@
   
   .actions button {
     cursor: pointer;
+    width: 97%;
     font-size: 1rem;
     font-weight: 600;
     color: white;
     background-color: #c90202;
     border: 1px solid #ab0101;
     border-radius: 4px;
-    padding: 0.5rem 2.5rem;
+    padding: 0.5rem 0;
     transition: all .2s;
     font-family: 'montserrat';
     /* font-family: 'aboreto'; */
@@ -78,7 +93,7 @@
     background-color: transparent;
     color: rgba(255, 255, 255, 0.904);
     border: none;
-    padding: 0.15rem 1.5rem;
+   
   }
   
   .actions .toggle:hover {
@@ -92,22 +107,32 @@
     display: block;
     border:0;
     font-size: 1rem;
-    padding: 0;
+    padding-left: .3rem;
     cursor: pointer;
     font-family: 'montserrat';
   }
 
   .mediaButton {
-    width: 100%;
-    height: 3rem;
+    width: 97%;
+    height: 2.5rem;
+    margin-bottom: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    background-color: rgba(242, 241, 241, 0.997);
+    background-color: rgba(242, 241, 241, 0.279);
     justify-content: center;
     margin-top: 1rem;
-    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
     border-radius: 5px;
+    transition: all .2s;
+    
+  }
+
+  .mediaButton:hover{
+    background-color: rgba(242, 241, 241, 0.133);
+
   }
 
   .mediaButton img{
