@@ -62,10 +62,10 @@ nav, ul{
     /* color: orange;
     border: 2px solid orange; */
     color: rgb(236, 234, 234);
-    border: 2px solid rgb(236, 234, 234);
+    border: 1px solid rgb(236, 234, 234);
     align-self: flex-start;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     transition: all .2s;
   }
 
@@ -73,5 +73,5 @@ nav, ul{
   .list li button:hover{
     cursor: pointer;
     color: rgb(214, 139, 0);
-    border: 2px solid rgb(214, 139, 0);;
+    border: 1px solid rgb(214, 139, 0);;
 }

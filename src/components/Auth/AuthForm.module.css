@@ -1,11 +1,11 @@
 .auth-container{
-    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* padding: .3rem; */
-    
-    
+    margin-top: 1rem;
+    min-height: 85%;
+    /* background-color: red; */
+    /* overflow: hidden; */
 }
 
 .auth {
@@ -141,3 +141,11 @@
     object-fit: contain;
   }
   
+  .error{
+    color:rgb(252, 72, 72);
+    padding-left: .3rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    text-align: start;
+    align-self: start;
+  }

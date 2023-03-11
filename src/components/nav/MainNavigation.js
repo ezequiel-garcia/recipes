@@ -4,8 +4,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 import RecipesContext from '../store/recipes-context';
 import classes from './MainNavigation.module.css';
-import { auth } from '../../firebase';
-import { signOut } from 'firebase/auth';
+// import { auth } from '../../firebase';
+// import { signOut } from 'firebase/auth';
 
 const MainNavigation = () => {
   const authCtx = useContext(AuthContext);
@@ -13,9 +13,9 @@ const MainNavigation = () => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    signOut(auth);
-    recipesCtx.setRecipes([]);
     navigate('/');
+    authCtx.logout();
+    recipesCtx.setRecipes([]);
   };
 
   return (
