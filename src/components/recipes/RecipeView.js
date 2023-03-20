@@ -53,7 +53,7 @@ const RecipeView = ({ recipe }) => {
         <h1 style={{ color: 'white' }}>{recipe.name}</h1>
         <button
           className={classes['edit-button']}
-          onClick={() => navigation(`/edit/${recipe.id}`)}
+          onClick={() => navigation(`/recipes/edit/${recipe.id}`)}
         >
           Edit
         </button>
@@ -70,9 +70,13 @@ const RecipeView = ({ recipe }) => {
         <div className={classes['ingredients-container']}>
           <h2 className={classes['category-title']}>Ingredients</h2>
           <ul>
-            {ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
+            {ingredients.map((ingredient, index) =>
+              ingredient !== '' ? (
+                <li key={index}>{ingredient}</li>
+              ) : (
+                <br key={index} />
+              )
+            )}
           </ul>
         </div>
       )}

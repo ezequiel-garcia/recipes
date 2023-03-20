@@ -43,7 +43,6 @@ const RecipeForm = ({ recipeForEdit }) => {
   const handleImagePicker = async (e) => {
     const selectedFile = e.target.files[0];
     const imageResized = await resizeImage(selectedFile);
-    console.log(imageResized + 'image resized');
     //setFile(selectedFile);
     setRecipe({ ...recipe, image: URL.createObjectURL(imageResized) });
   };
@@ -98,7 +97,7 @@ const RecipeForm = ({ recipeForEdit }) => {
             name="ingredients"
             value={recipe.ingredients}
             onChange={handleChange}
-            rows={5}
+            rows={8}
           />
         </div>
         <div>
@@ -108,7 +107,7 @@ const RecipeForm = ({ recipeForEdit }) => {
             name="instructions"
             value={recipe.instructions}
             onChange={handleChange}
-            rows={5}
+            rows={8}
           />
         </div>
         <div>
@@ -135,7 +134,7 @@ const RecipeForm = ({ recipeForEdit }) => {
           type="submit"
           className={`${classes['select-image-label']} ${classes['create-button']}`}
         >
-          Create Recipe
+          {recipeForEdit ? 'Save' : 'Create Recipe'}
         </button>
       </form>
     </div>

@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import RecipesContext from '../components/store/recipes-context';
 import RecipeView from '../components/recipes/RecipeView';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const RecipeDetailPage = () => {
   const recipesCtx = useContext(RecipesContext);

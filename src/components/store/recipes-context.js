@@ -31,23 +31,22 @@ export const RecipesContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getRecipes = async () => {
-    setIsLoading(true);
-    try {
-      const querySnapshot = await getDocs(collection(db, authCtx.uid));
-
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        setRecipes((prev) => [...prev, doc.data()]);
-      });
-    } catch (e) {
-      console.log(e);
-      setError(e);
-    }
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const getRecipes = async () => {
+      setIsLoading(true);
+      try {
+        const querySnapshot = await getDocs(collection(db, authCtx.uid));
+
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          setRecipes((prev) => [...prev, doc.data()]);
+        });
+      } catch (e) {
+        console.log(e);
+        setError(e);
+      }
+      setIsLoading(false);
+    };
     // If the user is loggedOut, refresh the page to go back to authentication page
     if (
       !authCtx.isLoggedIn &&
@@ -57,8 +56,10 @@ export const RecipesContextProvider = ({ children }) => {
       window.location.reload();
 
     //If there is not recipes and the user is LogedIn get the recipes from the DB
-    if (recipes.length === 0 && authCtx.isLoggedIn) getRecipes();
-  }, [recipes, authCtx.isLoggedIn]);
+    if (recipes.length === 0 && authCtx.isLoggedIn) {
+      getRecipes();
+    }
+  }, [recipes, authCtx.isLoggedIn, authCtx.uid]);
 
   // const uploadToFirebase = async (recipe) => {
   //   // upload the image to db storage and then put the url into recipe
