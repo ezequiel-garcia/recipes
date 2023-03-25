@@ -1,0 +1,57 @@
+.container-gpt {
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.744);
+    /* text-align: start; */
+    padding: 1rem;
+    max-width: 35rem;
+    border-radius: 5px;
+  
+    
+}
+
+.container-gpt label{
+    margin-bottom: 1rem;;
+}
+
+.container-gpt input{
+    background-color: #eeeded;
+    border-radius: 4px;
+    border: 1px solid white;
+    text-align: left;
+    padding: 0.25rem;
+
+}
+
+.container-gpt input:focus{
+    outline: none;
+}
+
+.container-gpt button{
+    margin-top: 1rem;
+    padding: .5rem 1rem ;
+    background-color: transparent;
+    color: rgb(236, 234, 234);
+    border: 1px solid rgb(236, 234, 234);
+    transition: all .2s;
+  }
+
+  .container-gpt button:hover{
+    cursor: pointer;
+    color: rgb(214, 139, 0);
+    border: 1px solid rgb(214, 139, 0);;
+}
+
+.recipe{
+    text-align: start;
+}
+
+.title{
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.subtitle{
+    font-weight: 600;
+    color: green;
+}
