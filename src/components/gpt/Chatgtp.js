@@ -11,13 +11,22 @@ function Chatgtp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (input === '') {
+      setError((prev) => {
+        return { ...prev, input: true };
+      });
+      return;
+    }
+    setError({ input: false, response: false });
     setRecipe(null);
     setIsLoading(true);
     try {
       const recipe = await gptRequest(input);
       setRecipe(recipe);
     } catch (e) {
-      error.response = true;
+      setError((prev) => {
+        return { ...prev, response: true };
+      });
     }
     setIsLoading(false);
     setInput('');
@@ -32,7 +41,6 @@ function Chatgtp() {
           <label htmlFor="input">
             Ingredients that you have in your frigde
           </label>
-          {error.input && <p className="">You have to add ingredients</p>}
           <input
             type="text"
             id="input"
@@ -41,6 +49,9 @@ function Chatgtp() {
             onChange={(e) => setInput(e.target.value)}
             className={error.input ? 'error' : ''}
           />
+          {error.input && (
+            <p className={classes['error-text']}>You have to add ingredients</p>
+          )}
         </div>
 
         <button type="submit" className="create-button">
@@ -49,7 +60,11 @@ function Chatgtp() {
       </form>
 
       <div className={classes.recipe}>
-        {isLoading && <Loader />}
+        {isLoading && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Loader />
+          </div>
+        )}
         {recipeDetails.map((recipeDetail, index) =>
           recipeDetail !== '' ? (
             <p

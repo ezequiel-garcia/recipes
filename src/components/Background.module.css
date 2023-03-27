@@ -1,13 +1,16 @@
 .image {
     text-align: center;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     background-image: url(../assets/background2.jpg);
     background-size: cover;
 
 }
 
 .lighter {
-    height: 100vh;
+    min-height: 100vh;
+
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.165);
     margin: 0 auto;
 }

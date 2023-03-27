@@ -55,3 +55,8 @@
     font-weight: 600;
     color: green;
 }
+
+.error-text{
+    color: rgb(244, 37, 37);
+    text-align: start;
+}

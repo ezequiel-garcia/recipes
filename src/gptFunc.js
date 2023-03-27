@@ -10,7 +10,7 @@ export async function gptRequest(prompt) {
   try {
     const response = await openai.createCompletion({
       model: 'text-davinci-003',
-      prompt: `With this ingredients: ${prompt} tell me a recipe I can make. `,
+      prompt: `With this ingredients: ${prompt} tell me a recipe I can make. You don't have to use all the ingredients. If the given igredients are not really ingredientes say that.`,
       max_tokens: 3000,
       temperature: 0,
       frequency_penalty: 0.5,
