@@ -41,7 +41,7 @@ const RecipeView = ({ recipe }) => {
       : '';
 
   return (
-    <div className={classes.container}>
+    <div className={classes['recipe-container']}>
       <div
         style={{
           display: 'flex',
@@ -58,29 +58,29 @@ const RecipeView = ({ recipe }) => {
           Edit
         </button>
       </div>
+      <div className={classes['image-ingredients']}>
+        <img
+          src={recipe.image}
+          alt="recipe img"
+          style={{ height: '20rem', width: '100%', objectFit: 'cover' }}
+        />
 
-      <img
-        src={recipe.image}
-        alt="recipe img"
-        style={{ height: '20rem', width: '100%', objectFit: 'cover' }}
-      />
-
-      {/* Ingredients */}
-      {ingredients.length > 0 && (
-        <div className={classes['ingredients-container']}>
-          <h2 className={classes['category-title']}>Ingredients</h2>
-          <ul>
-            {ingredients.map((ingredient, index) =>
-              ingredient !== '' ? (
-                <li key={index}>{ingredient}</li>
-              ) : (
-                <br key={index} />
-              )
-            )}
-          </ul>
-        </div>
-      )}
-
+        {/* Ingredients */}
+        {ingredients.length > 0 && (
+          <div className={classes['ingredients-container']}>
+            <h2 className={classes['category-title']}>Ingredients</h2>
+            <ul>
+              {ingredients.map((ingredient, index) =>
+                ingredient !== '' ? (
+                  <li key={index}>{ingredient}</li>
+                ) : (
+                  <br key={index} />
+                )
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
       {/* Instructions */}
       {instructions !== '' && (
         <div>

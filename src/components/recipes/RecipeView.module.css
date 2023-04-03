@@ -2,7 +2,17 @@
     font-family: montserrat;
 }
 
-.container h1{
+@media (min-width: 768px) {
+  .recipe-container {
+    padding: 0 2rem;
+    max-width: 60rem;
+    margin: 0 auto;
+
+   
+  }
+}
+
+.recipe-container h1{
     margin-left: .5rem;
     font-size: 2.5rem;
 }
@@ -21,7 +31,7 @@
     margin-bottom: .7rem;
 }
 
-.container p{
+.recipe-container p{
     margin-left: 1rem;
 }
 
@@ -47,9 +57,27 @@
     margin: 0 auto;
     margin-top: 2rem;
     cursor: pointer; 
+    
   }
 
   .delete-button:hover {
     color: #b90606;
+  }
+
+  @media (min-width: 768px){
+    .image-ingredients{
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .image-ingredients img{
+      max-width: 40rem;
+    }
+
+    .category-title{
+      margin-left: 0;
+      margin-top: 0;
+    }
   }
 

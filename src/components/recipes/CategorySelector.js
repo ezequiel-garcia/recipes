@@ -19,6 +19,7 @@ const CategorySelector = ({ onChange, isFilter, style }) => {
       style={style}
     >
       {isFilter && <option value={''}>Filter by...</option>}
+      {isFilter && <option value={'Favorites'}>Favorites</option>}
       {categories.map((category) => (
         <option key={category} value={category}>
           {category}

@@ -14,11 +14,17 @@ const RecipesPage = () => {
 
   const recipes = recipesCtx.recipes;
 
-  const allRecipes = recipes.filter(
-    (recipe) =>
-      recipe.name.toLowerCase().includes(search.toLowerCase()) &&
-      recipe.category.toLowerCase().includes(filterCategory.toLowerCase())
+  let allRecipes = recipes.filter((recipe) =>
+    recipe.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  if (filterCategory === 'Favorites') {
+    allRecipes = allRecipes.filter((recipe) => recipe.isFavorite === true);
+  } else {
+    allRecipes = allRecipes.filter((recipe) =>
+      recipe.category.toLowerCase().includes(filterCategory.toLowerCase())
+    );
+  }
 
   return (
     <>

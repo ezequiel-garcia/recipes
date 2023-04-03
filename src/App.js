@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // { path: '*', loader: () => redirect('/') }, // Maybe add a 404 page
+  { path: '*', loader: () => redirect('/') }, //  add a 404 page
 ]);
 
 function App() {
