@@ -60,9 +60,9 @@
     
   }
 
-  .delete-button:hover {
+  /* .delete-button:hover {
     color: #b90606;
-  }
+  } */
 
   @media (min-width: 768px){
     .image-ingredients{

@@ -1,0 +1,48 @@
+.confirmation-window {
+    position: fixed;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.695);
+    padding: 20px;
+    border-radius: 5px;
+  }
+
+  @media (min-width: 480px){
+    .confirmation-window {
+        width: auto;
+    }
+  }
+  
+  .confirmation-window p {
+    margin-bottom: 10px;
+  }
+  
+  .button {
+    cursor: pointer;
+    margin-top: 1rem;
+    padding: .5rem 1rem ;
+    background-color: rgba(251, 2, 2, 0.746);
+    color: rgb(236, 234, 234);
+    border: 1px solid rgb(236, 234, 234);
+    transition: all .2s;
+    
+  }
+
+  .button-no{
+    background-color: transparent;
+  }
+
+  .button:hover{
+    transform: scale(1.05);
+  }
+
+
+  .buttons-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  

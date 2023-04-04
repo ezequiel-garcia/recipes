@@ -1,19 +1,21 @@
+import { useState } from 'react';
 import { useContext } from 'react';
 import Loader from '../util/Loader';
 import classes from './RecipeView.module.css';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import RecipesContext from '../store/recipes-context';
 import { useNavigate } from 'react-router-dom';
+import ConfirmDialog from './ConfirmDialog';
 
 const RecipeView = ({ recipe }) => {
   const recipeCtx = useContext(RecipesContext);
   const navigation = useNavigate();
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete?') === true) {
-      navigation('/recipes');
-      recipeCtx.deleteRecipe(id);
-    }
+    setShowConfirmation(false);
+    recipeCtx.deleteRecipe(recipe.id);
+    navigation('/recipes');
   };
 
   if (!recipe) {
@@ -90,13 +92,19 @@ const RecipeView = ({ recipe }) => {
       )}
       <button
         className={classes['delete-button']}
-        onClick={() => handleDelete(recipe.id)}
+        onClick={() => setShowConfirmation(true)}
       >
         <AiTwotoneDelete
           size={40}
-          style={{ color: '#f64040', fontWeight: '1rem' }}
+          style={{ color: '#e50a0a', fontWeight: '1rem' }}
         />
       </button>
+      {showConfirmation && (
+        <ConfirmDialog
+          handleDelete={handleDelete}
+          setShowConfirmation={setShowConfirmation}
+        />
+      )}
     </div>
   );
 };

@@ -51,6 +51,11 @@ function Chatgtp() {
           {error.input && (
             <p className={classes['error-text']}>You have to add ingredients</p>
           )}
+          {error.response && (
+            <p className={classes['error-text']}>
+              Error connecting with ChatGPT. Try again later
+            </p>
+          )}
         </div>
 
         <button type="submit" className="create-button">
