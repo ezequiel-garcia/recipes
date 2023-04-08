@@ -60,7 +60,11 @@ const RecipeView = ({ recipe }) => {
           Edit
         </button>
       </div>
-      <div className={classes['image-ingredients']}>
+      <div
+        className={`${classes['image-ingredients']} ${
+          ingredients.length === 0 && classes['center-image']
+        }`}
+      >
         <img
           src={recipe.image}
           alt="recipe img"

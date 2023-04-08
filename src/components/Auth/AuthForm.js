@@ -1,21 +1,18 @@
-import { useState, useRef, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useContext, useEffect } from 'react';
 import Loader from '../util/Loader';
 import classes from './AuthForm.module.css';
 import AuthContext from '../store/auth-context';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
-import { auth } from '../../firebase';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
 import SocialLogin from './SocialLogin';
+import ForgotPassword from './ForgotPassword';
 
 const AuthForm = () => {
   const navigate = useNavigate();
 
   const authCtx = useContext(AuthContext);
+  const [showForgot, setShowForgot] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState('');
   const [repeatedEmail, setRepeatedEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
@@ -36,26 +33,18 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
-  const forgotPasswordHandler = () => {
-    // axios
-    //   .post(
-    //     `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_WEB_KEY}`,
-    //     {
-    //       email: 'eze.hoch@gmail.com',
-    //       requestType: 'PASSWORD_RESET',
-    //     }
-    //   )
-    //   .then((res) => {
-    //     // setIsLoading(false);
-    //     // authCtx.login(res.data.idToken);
-    //     console.log(res.data);
-    //   })
-    //   .catch((error) => {
-    //     const errorMessage =
-    //       'Authentication failed! ' + error.response?.data?.error?.message;
-
-    //     alert(errorMessage);
-    //   });
+  const forgotPasswordHandler = (email) => {
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
     return;
   };
 
@@ -133,7 +122,7 @@ const AuthForm = () => {
             <button
               className={classes.forgot}
               type="button"
-              onClick={forgotPasswordHandler}
+              onClick={() => setShowForgot(true)}
             >
               Forgot password?
             </button>
@@ -155,6 +144,7 @@ const AuthForm = () => {
         </form>
         <SocialLogin />
       </div>
+      {showForgot && <ForgotPassword setShowForgot={setShowForgot} />}
     </div>
   );
 };

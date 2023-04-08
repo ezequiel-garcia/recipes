@@ -70,6 +70,9 @@
       gap: 2rem;
       margin-bottom: 1rem;
     }
+    .center-image{
+      justify-content: center;
+    }
 
     .image-ingredients img{
       max-width: 40rem;
