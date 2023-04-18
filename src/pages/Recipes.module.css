@@ -6,6 +6,8 @@
 @media(min-width: 480px){
     .filter-search-container{
         max-width: 60%;
+        /* max-width: 70rem; */
+
     }
 }
 

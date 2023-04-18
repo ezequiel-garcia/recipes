@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { categories } from '../../DUMMY_DATA';
 import classes from './CategorySelector.module.css';
+
+const categories = [
+  'Main Course',
+  'Appetizer',
+  'Dessert',
+  'Salad',
+  'Side dish',
+  'Soup',
+  'Other',
+];
 
 const CategorySelector = ({ onChange, isFilter, style }) => {
   const defaultValue = isFilter ? '' : categories[0];

@@ -143,7 +143,7 @@ export const RecipesContextProvider = ({ children }) => {
     } catch (e) {
       setRecipes(prevRecipes);
       setError('Error updating Recipe');
-      console.error('Error updating Recipe: ', e);
+      console.error('Error updating Recipe: ');
     }
   };
 

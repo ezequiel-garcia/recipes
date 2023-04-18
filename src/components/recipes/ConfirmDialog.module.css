@@ -4,7 +4,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.695);
+    background-color: rgba(0, 0, 0, 0.904);
     padding: 20px;
     border-radius: 5px;
   }
@@ -16,7 +16,7 @@
   }
   
   .confirmation-window p {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   
   .button {

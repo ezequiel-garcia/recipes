@@ -21,7 +21,8 @@
 
 @media(min-width: 768px){
     .container{
-        max-width: 80rem ;
+        /* max-width: 70rem ; */
+        max-width: 90%;
     }
 }
 

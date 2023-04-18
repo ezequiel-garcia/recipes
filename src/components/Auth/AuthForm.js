@@ -86,7 +86,7 @@ const AuthForm = () => {
           </div>
           {!isLogin && (
             <div className={classes.control}>
-              <label htmlFor="repeatedEmail">Your Email</label>
+              <label htmlFor="repeatedEmail">Repeat Email</label>
               <input
                 type="email"
                 id="repeatedEmail"
@@ -108,12 +108,12 @@ const AuthForm = () => {
           </div>
           {!isLogin && (
             <div className={classes.control}>
-              <label htmlFor="repeatedPassword">Your Password</label>
+              <label htmlFor="repeatedPassword">Repeat Password</label>
               <input
                 type="password"
                 id="repeatedPassword"
                 value={repeatedPassword}
-                onChange={(e) => setRepeatedEmail(e.target.value)}
+                onChange={(e) => setRepeatedPassword(e.target.value)}
                 required
               />
             </div>

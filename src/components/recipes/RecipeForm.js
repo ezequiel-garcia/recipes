@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import classes from './RecipeForm.module.css';
 import RecipesContext from '../store/recipes-context';
@@ -64,16 +64,19 @@ const RecipeForm = ({ recipeForEdit }) => {
     navigation('/recipes');
   };
 
+  useEffect(() => {
+    if (errors.name) window.scrollTo(0, 0);
+  }, [errors.name]);
+
   return (
     <div className={classes.containerForm}>
       <form onSubmit={handleSubmit} className={classes.form}>
         <div>
-          <label htmlFor="name">Recipe Name:</label>
-          {errors.name && (
-            <p className={classes['error-text']}>
-              You have to complete the name
-            </p>
-          )}
+          <label htmlFor="name">
+            {errors.name && <span className={classes['error-text']}>* </span>}
+            Recipe Title:
+          </label>
+
           <input
             type="text"
             id="name"

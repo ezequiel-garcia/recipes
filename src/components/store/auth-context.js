@@ -135,8 +135,9 @@ export const AuthContextProvider = ({ children }) => {
     setError(false);
     createUserWithEmailAndPassword(auth, email, password)
       .catch((e) => {
+        console.log(e.message);
         setError(e);
-        console.clear();
+        // console.clear();
       })
       .finally(() => {
         setIsLoading(false);

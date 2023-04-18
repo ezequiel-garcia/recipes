@@ -28,7 +28,7 @@ const RecipeView = ({ recipe }) => {
           alignItems: 'center',
         }}
       >
-        <Loader />
+        <p>Not recipe found</p>
       </div>
     );
   }
